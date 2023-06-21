@@ -14,7 +14,7 @@ RUN pip install --prefix /install --no-warn-script-location --no-cache-dir -r re
 
 FROM python:3.11.0a5-alpine
 
-RUN apk add --update --no-cache tor curl openrc libstdc++
+RUN apk add --update --no-cache curl openrc libstdc++
 # libcurl4-openssl-dev
 
 RUN apk -U upgrade
@@ -70,8 +70,6 @@ ENV CONFIG_VOLUME=$config_dir \
 WORKDIR /whoogle
 
 COPY --from=builder /install /usr/local
-COPY misc/tor/torrc /etc/tor/torrc
-COPY misc/tor/start-tor.sh misc/tor/start-tor.sh
 COPY app/ app/
 COPY run whoogle.env* ./
 
@@ -91,4 +89,3 @@ EXPOSE $EXPOSE_PORT
 HEALTHCHECK --interval=30s --timeout=5s \
   CMD curl -f http://localhost:${EXPOSE_PORT}/healthz || exit 1
 
-CMD misc/tor/start-tor.sh & ./run
