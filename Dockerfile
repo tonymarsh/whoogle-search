@@ -76,9 +76,6 @@ COPY run whoogle.env* ./
 # Create user/group to run as
 RUN adduser -D -g $DOCKER_USERID -u $DOCKER_USERID $DOCKER_USER
 
-# Fix ownership / permissions
-RUN chown -R ${DOCKER_USER}:${DOCKER_USER} /whoogle /var/lib/tor
-
 # Allow writing symlinks to build dir
 RUN chown $DOCKER_USERID:$DOCKER_USERID app/static/build
 
